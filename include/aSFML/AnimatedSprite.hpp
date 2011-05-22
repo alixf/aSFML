@@ -1,8 +1,7 @@
 #ifndef ASFML_ANIMATEDSPRITE_HPP
 #define ASFML_ANIMATEDSPRITE_HPP
-/*
+
 #include <SFML/Graphics.hpp>
-#include <ticpp.h>
 
 namespace sf
 {
@@ -12,30 +11,35 @@ namespace sf
         struct Frame
         {
             sf::Sprite sprite;
-            float time;
+            unsigned int time;
         };
 
         struct Animation
         {
             bool loop;
             bool autoplay;
-            std::vector<sf::Sprite> frames;
+            unsigned int totalTime;
+            std::vector<Frame> frames;
         };
 
         AnimatedSprite();
-
 		~AnimatedSprite();
-		
-        bool LoadFromFile(const std::string& filePath);
 
+        sf::Vector2f GetPosition() const;
+        unsigned int GetCurrentAnimation() const;
+
+        void SetPosition(const sf::Vector2f& position);
+        void SetCurrentAnimation(unsigned int animation);
+
+        bool LoadFromFile(const std::string& filePath);
         void Draw(sf::RenderWindow& window);
 
     private :
         sf::Clock m_clock;
+        unsigned int m_currentAnimation;
         std::vector<Animation> m_animations;
-        sf::Image m_image;
     };
 }
-*/
+
 
 #endif // ASFML_ANIMATEDSPRITE_HPP
