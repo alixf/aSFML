@@ -20,34 +20,6 @@ namespace sf
                         DISABLED = 1 << 5
                        };
 
-            std::string StateToStr(State state)
-            {
-                switch(state)
-                {
-                case NORMAL :
-                    return "NORMAL";
-                    break;
-                case HOVER :
-                    return "HOVER";
-                    break;
-                case PRESSED :
-                    return "PRESSED";
-                    break;
-                case CLICKED :
-                    return "CLICKED";
-                    break;
-                case ACTIVE :
-                    return "ACTIVE";
-                    break;
-                case DISABLED :
-                    return "DISABLED";
-                    break;
-                default :
-                    return "";
-                    break;
-                }
-            }
-
             Element();
 
             virtual ~Element();
