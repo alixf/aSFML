@@ -150,8 +150,6 @@ void sf::ui::Slider::OnEvent(const sf::Event& event)
             break;
 
         case sf::Event::MouseButtonReleased :
-
-            m_state = HOVER;
             if(m_boundingRect.Contains(event.MouseButton.X, event.MouseButton.Y) && m_state == PRESSED)
             {
                 m_state = CLICKED;
@@ -198,4 +196,9 @@ void sf::ui::Slider::ApplySkin()
     sf::ApplyGradient(m_cursor, stateSkin.cursorBorderGradientOrientation, stateSkin.cursorBorderColor, stateSkin.cursorBorderGradientColor, true);
 
     SetPosition(position);
+}
+
+void sf::ui::Slider::OnValueChange(boost::signal<void (float)>::slot_type slot)
+{
+    m_valueChangeSignal.connect(slot);
 }

@@ -91,7 +91,7 @@ void sf::ui::Button::OnEvent(const sf::Event& event)
                 if(m_state == NORMAL)
                 {
                     m_state = HOVER;
-                    m_hoverSignal();
+                    Element::m_hoverSignal();
                 }
             }
             else if(m_state != NORMAL)

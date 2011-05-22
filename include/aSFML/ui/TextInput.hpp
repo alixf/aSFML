@@ -30,13 +30,14 @@ namespace sf
                 sf::Color               textColor;
                 sf::Color               textShadowColor;
                 sf::Vector2f            textShadowOffset;
-                sf::FloatRect           textMargin;
+                sf::Vector2f            textOffset;
                 // Placeholder
                 float                   placeholderSize;
                 sf::Font&               placeholderFont;
                 sf::Color               placeholderColor;
                 sf::Color               placeholderShadowColor;
                 sf::Vector2f            placeholderShadowOffset;
+                sf::Vector2f            placeholderOffset;
                 // Cursor
                 sf::Color               cursorColor;
                 float                   cursorWidth;
@@ -63,19 +64,9 @@ namespace sf
 
             void Draw(sf::RenderWindow& window);
 
-            // Signals
-            boost::signal<void ()> m_hoverSignal;
-            boost::signal<void ()> m_leaveSignal;
-            boost::signal<void ()> m_pressSignal;
-            boost::signal<void ()> m_clickSignal;
-            boost::signal<void ()> m_releaseSignal;
-            boost::signal<void ()> m_disableSignal;
-            boost::signal<void ()> m_activateSignal;
-            boost::signal<void ()> m_desactivateSignal;
-            boost::signal<void ()> m_submitSignal;
-            boost::signal<void ()> m_switchSignal;
-
-            boost::signal<void (const std::wstring&)> m_valueChangeSignal;
+            void OnSwitch(boost::signal<void ()>::slot_type slot);
+            void OnSubmit(boost::signal<void ()>::slot_type slot);
+            void OnValueChange(boost::signal<void (const std::wstring&)>::slot_type slot);
 
         private :
             void ApplySkin();
@@ -91,6 +82,11 @@ namespace sf
             sf::Text        m_text;
             sf::Text        m_placeholder;
             Skin            m_skin;
+
+            // Signals
+            boost::signal<void ()> m_submitSignal;
+            boost::signal<void ()> m_switchSignal;
+            boost::signal<void (const std::wstring&)> m_valueChangeSignal;
         };
     }
 }

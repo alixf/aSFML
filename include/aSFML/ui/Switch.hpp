@@ -69,14 +69,7 @@ namespace sf
 
             void Draw(sf::RenderWindow& window);
 
-            // Signals
-            boost::signal<void ()> m_hoverSignal;
-            boost::signal<void ()> m_leaveSignal;
-            boost::signal<void ()> m_pressSignal;
-            boost::signal<void ()> m_clickSignal;
-            boost::signal<void ()> m_releaseSignal;
-            boost::signal<void ()> m_disableSignal;
-            boost::signal<void (bool)> m_valueChangeSignal;
+            void OnValueChange(boost::signal<void (bool)>::slot_type slot);
 
         private :
             void ApplySkin();
@@ -88,6 +81,9 @@ namespace sf
             sf::Text        m_offText;
             sf::Shape       m_switch;
             Skin            m_skin;
+
+            // Signals
+            boost::signal<void (bool)> m_valueChangeSignal;
         };
     }
 }

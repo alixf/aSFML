@@ -28,14 +28,6 @@ namespace sf
 
             void Draw(sf::RenderWindow& window);
 
-            // Signals
-            boost::signal<void ()> m_hoverSignal;
-            boost::signal<void ()> m_leaveSignal;
-            boost::signal<void ()> m_pressSignal;
-            boost::signal<void ()> m_clickSignal;
-            boost::signal<void ()> m_releaseSignal;
-            boost::signal<void ()> m_disableSignal;
-
         private :
             std::map<State, sf::Sprite> m_sprites;
         };

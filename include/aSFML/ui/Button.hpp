@@ -2,7 +2,6 @@
 #define ASFML_UI_BUTTON_HPP
 
 #include "Element.hpp"
-#include <boost/signals.hpp>
 #include "../Shape.hpp"
 
 namespace sf
@@ -51,16 +50,6 @@ namespace sf
             void OnEvent(const sf::Event& event);
 
             void Draw(sf::RenderWindow& window);
-
-            // Signals
-            boost::signal<void ()> m_hoverSignal;
-            boost::signal<void ()> m_leaveSignal;
-            boost::signal<void ()> m_pressSignal;
-            boost::signal<void ()> m_clickSignal;
-            boost::signal<void ()> m_releaseSignal;
-            boost::signal<void ()> m_disableSignal;
-
-            //TODO : make signal assignement methods
 
         private :
             void ApplySkin();

@@ -13,13 +13,14 @@ sf::ui::TextInput::StateSkin::StateSkin() :
     textFont(const_cast<sf::Font&>(sf::Font::GetDefaultFont())),
     textColor(sf::Color::Black),
     textShadowColor(sf::Color::Black),
-    textShadowOffset(sf::Vector2f(0.f,0.f)),
-    textMargin(sf::FloatRect(0.f,0.f,0.f,0.f)),
+    textShadowOffset(0.f,0.f),
+    textOffset(0.f,0.f),
     placeholderSize(16.f),
     placeholderFont(const_cast<sf::Font&>(sf::Font::GetDefaultFont())),
     placeholderColor(sf::Color::Black),
     placeholderShadowColor(sf::Color::Black),
-    placeholderShadowOffset(sf::Vector2f(0.f,0.f)),
+    placeholderShadowOffset(0.f,0.f),
+    placeholderOffset(0.f,0.f),
     cursorColor(sf::Color::Black),
     cursorWidth(1.f),
     cursorGradientColor(sf::Color::Black),
@@ -29,7 +30,7 @@ sf::ui::TextInput::StateSkin::StateSkin() :
 
 sf::ui::TextInput::TextInput(const std::wstring& placeholder, const sf::Vector2f& position, const sf::Vector2f& size) :
     m_backgroundRect(sf::Vector2f(0.f,0.f), size),
-    m_cursorBlinkTime(1.f),
+    m_cursorBlinkTime(0.5f),
     m_drawCursor(false),
     m_cursorPosition(0),
     m_text(""),
@@ -74,7 +75,8 @@ void sf::ui::TextInput::SetPosition(const sf::Vector2f& position)
     m_backgroundRect.Left = position.x;
     m_backgroundRect.Top = position.y;
     m_background.SetPosition(position);
-    m_text.SetPosition(position+sf::Vector2f(m_skin[m_state].textMargin.Left, m_skin[m_state].textMargin.Top));
+    m_text.SetPosition(position+sf::Vector2f(m_skin[m_state].textOffset.x, m_skin[m_state].textOffset.y));
+    m_placeholder.SetPosition(position+sf::Vector2f(m_skin[m_state].placeholderOffset.x, m_skin[m_state].placeholderOffset.y));
     MoveCursor(0);
 }
 
@@ -131,12 +133,14 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
             break;
 
         case sf::Event::MouseButtonReleased :
-            if(m_state == PRESSED && GetRect().Contains(event.MouseButton.X, event.MouseButton.Y))
+            if(m_state == PRESSED)
             {
                 m_state = CLICKED;
                 m_clickSignal();
                 m_state = ACTIVE;
                 m_releaseSignal();
+                m_drawCursor = true;
+                m_cursorClock.Reset();
             }
             break;
 
@@ -217,29 +221,45 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
 void sf::ui::TextInput::Draw(sf::RenderWindow& window)
 {
     window.Draw(m_background);
+
+    if(m_state != ACTIVE && m_text.GetString().IsEmpty()) // Draw placeholder
+    {
+        if(m_skin[m_state].placeholderShadowOffset != sf::Vector2f(0.f, 0.f))
+        {
+            m_placeholder.Move(m_skin[m_state].placeholderShadowOffset);
+            m_placeholder.SetColor(m_skin[m_state].placeholderShadowColor);
+            window.Draw(m_placeholder);
+            m_placeholder.Move(-m_skin[m_state].placeholderShadowOffset);
+            m_placeholder.SetColor(m_skin[m_state].placeholderColor);
+        }
+        window.Draw(m_placeholder);
+    }
+    else // Draw text
+    {
+        if(m_skin[m_state].textShadowOffset != sf::Vector2f(0.f, 0.f))
+        {
+            m_text.Move(m_skin[m_state].textShadowOffset);
+            m_text.SetColor(m_skin[m_state].textShadowColor);
+            window.Draw(m_text);
+            m_text.Move(-m_skin[m_state].textShadowOffset);
+            m_text.SetColor(m_skin[m_state].textColor);
+        }
+        window.Draw(m_text);
+    }
+
     if(m_cursorClock.GetElapsedTime() > m_cursorBlinkTime)
     {
         m_drawCursor = !m_drawCursor;
         m_cursorClock.Reset();
     }
-    if(m_drawCursor)
+    if(m_drawCursor && m_state == ACTIVE)
         window.Draw(m_cursor);
-
-    if(m_skin[m_state].textShadowOffset != sf::Vector2f(0.f, 0.f))
-    {
-        m_text.Move(m_skin[m_state].textShadowOffset);
-        m_text.SetColor(m_skin[m_state].textShadowColor);
-        window.Draw(m_text);
-        m_text.Move(-m_skin[m_state].textShadowOffset);
-        m_text.SetColor(m_skin[m_state].textColor);
-    }
-    window.Draw(m_text);
 }
 
 void sf::ui::TextInput::MoveCursor(int offset)
 {
     m_cursorPosition += offset;
-    m_cursor.SetPosition(m_backgroundRect.Left+m_skin[m_state].textMargin.Left+m_text.GetCharacterPos(m_cursorPosition).x, m_backgroundRect.Top+m_skin[m_state].textMargin.Top);
+    m_cursor.SetPosition(m_backgroundRect.Left+m_skin[m_state].textOffset.x+m_text.GetCharacterPos(m_cursorPosition).x, m_backgroundRect.Top+m_skin[m_state].textOffset.y);
     m_drawCursor = true;
     m_cursorClock.Reset();
 }
@@ -258,12 +278,28 @@ void sf::ui::TextInput::ApplySkin()
     m_placeholder.SetFont(stateSkin.placeholderFont);
     m_placeholder.SetColor(stateSkin.placeholderColor);
     // Background
-    m_background = sf::RoundedRectangle(sf::FloatRect(0.f,0.f,m_backgroundRect.Width+stateSkin.textMargin.Left+stateSkin.textMargin.Width, m_backgroundRect.Height+stateSkin.textMargin.Top+stateSkin.textMargin.Height), stateSkin.backgroundColor, stateSkin.backgroundRoundness, stateSkin.backgroundBorderThickness, stateSkin.backgroundBorderColor);
+    m_background = sf::RoundedRectangle(sf::FloatRect(0.f,0.f,m_backgroundRect.Width, m_backgroundRect.Height), stateSkin.backgroundColor, stateSkin.backgroundRoundness, stateSkin.backgroundBorderThickness, stateSkin.backgroundBorderColor);
     sf::ApplyGradient(m_background, stateSkin.backgroundGradientOrientation, stateSkin.backgroundColor, stateSkin.backgroundGradientColor);
     sf::ApplyGradient(m_background, stateSkin.backgroundBorderGradientOrientation, stateSkin.backgroundBorderColor, stateSkin.backgroundBorderGradientColor, true);
     // Cursor
-    m_cursor = sf::Shape::Rectangle(sf::FloatRect(0.f, 0.f, stateSkin.cursorWidth, m_backgroundRect.Height-stateSkin.textMargin.Top-stateSkin.textMargin.Height), stateSkin.cursorColor);
+    m_cursor = sf::Shape::Rectangle(sf::FloatRect(0.f, 0.f, stateSkin.cursorWidth, m_backgroundRect.Height-2*stateSkin.textOffset.y), stateSkin.cursorColor);
     sf::ApplyGradient(m_cursor, stateSkin.cursorGradientOrientation, stateSkin.cursorColor, stateSkin.cursorGradientColor);
 
     SetPosition(position);
 }
+
+void sf::ui::TextInput::OnSwitch(boost::signal<void ()>::slot_type slot)
+{
+    m_switchSignal.connect(slot);
+}
+
+void sf::ui::TextInput::OnSubmit(boost::signal<void ()>::slot_type slot)
+{
+    m_submitSignal.connect(slot);
+}
+
+void sf::ui::TextInput::OnValueChange(boost::signal<void (const std::wstring&)>::slot_type slot)
+{
+    m_valueChangeSignal.connect(slot);
+}
+

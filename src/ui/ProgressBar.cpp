@@ -92,11 +92,13 @@ void sf::ui::ProgressBar::SetProgress(float progress)
 {
     m_progress = progress;
     StateSkin stateSkin = m_skin[m_state];
+    sf::Vector2f position = GetPosition();
 
     m_fillRect.Width = (m_backgroundRect.Width-stateSkin.fillMargin.Left-stateSkin.fillMargin.Width)*progress;
     m_fill = sf::RoundedRectangle(sf::FloatRect(0.f, 0.f, m_fillRect.Width, m_fillRect.Height), stateSkin.fillColor, stateSkin.fillRoundness, stateSkin.fillBorderThickness, stateSkin.fillBorderColor);
     sf::ApplyGradient(m_fill, stateSkin.fillGradientOrientation, stateSkin.fillColor, stateSkin.fillGradientColor);
     sf::ApplyGradient(m_fill, stateSkin.fillBorderGradientOrientation, stateSkin.fillBorderColor, stateSkin.fillBorderGradientColor, true);
+    SetPosition(position);
 
     m_valueChangeSignal(m_progress);
 }
@@ -169,4 +171,9 @@ void sf::ui::ProgressBar::ApplySkin()
 
     SetProgress(m_progress);
     SetPosition(position);
+}
+
+void sf::ui::ProgressBar::OnValueChange(boost::signal<void (float)>::slot_type slot)
+{
+    m_valueChangeSignal.connect(slot);
 }
