@@ -28,6 +28,13 @@ void sf::AnimatedSprite::SetPosition(const sf::Vector2f& position)
             frame->sprite.SetPosition(position);
 }
 
+void sf::AnimatedSprite::Move(const sf::Vector2f& position)
+{
+    for(std::vector<Animation>::iterator animation = m_animations.begin(); animation != m_animations.end(); ++animation)
+        for(std::vector<Frame>::iterator frame = animation->frames.begin(); frame != animation->frames.end(); ++frame)
+            frame->sprite.Move(position);
+}
+
 void sf::AnimatedSprite::SetCurrentAnimation(unsigned int animation)
 {
     m_currentAnimation = animation;

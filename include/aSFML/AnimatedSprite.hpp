@@ -29,6 +29,7 @@ namespace sf
         unsigned int GetCurrentAnimation() const;
 
         void SetPosition(const sf::Vector2f& position);
+        void Move(const sf::Vector2f& position);
         void SetCurrentAnimation(unsigned int animation);
 
         bool LoadFromFile(const std::string& filePath);
