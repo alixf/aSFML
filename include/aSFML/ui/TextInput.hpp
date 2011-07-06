@@ -64,9 +64,9 @@ namespace sf
 
             void Draw(sf::RenderWindow& window);
 
-            void OnSwitch(boost::signal<void ()>::slot_type slot);
-            void OnSubmit(boost::signal<void ()>::slot_type slot);
-            void OnValueChange(boost::signal<void (const std::wstring&)>::slot_type slot);
+            boost::signals::connection& OnSwitch(boost::signal<void ()>::slot_type slot);
+            boost::signals::connection& OnSubmit(boost::signal<void ()>::slot_type slot);
+            boost::signals::connection& OnValueChange(boost::signal<void (const std::wstring&)>::slot_type slot);
 
         private :
             void ApplySkin();

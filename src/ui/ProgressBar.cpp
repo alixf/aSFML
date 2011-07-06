@@ -173,7 +173,8 @@ void sf::ui::ProgressBar::ApplySkin()
     SetPosition(position);
 }
 
-void sf::ui::ProgressBar::OnValueChange(boost::signal<void (float)>::slot_type slot)
+boost::signals::connection&  sf::ui::ProgressBar::OnValueChange(boost::signal<void (float)>::slot_type slot)
 {
-    m_valueChangeSignal.connect(slot);
+    m_connections.push_back(m_valueChangeSignal.connect(slot));
+    return m_connections.back();
 }

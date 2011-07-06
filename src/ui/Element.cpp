@@ -9,47 +9,73 @@ sf::ui::Element::~Element()
 {
 }
 
-void sf::ui::Element::OnHover(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnHover(boost::signal<void ()>::slot_type slot)
 {
-    m_hoverSignal.connect(slot);
+    m_connections.push_back(m_hoverSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::Element::OnLeave(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnLeave(boost::signal<void ()>::slot_type slot)
 {
-    m_leaveSignal.connect(slot);
+    m_connections.push_back(m_leaveSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::Element::OnPress(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnPress(boost::signal<void ()>::slot_type slot)
 {
-    m_pressSignal.connect(slot);
+    m_connections.push_back(m_pressSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::Element::OnClick(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnClick(boost::signal<void ()>::slot_type slot)
 {
-    m_clickSignal.connect(slot);
+    m_connections.push_back(m_clickSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::Element::OnRelease(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnRelease(boost::signal<void ()>::slot_type slot)
 {
-    m_releaseSignal.connect(slot);
+    m_connections.push_back(m_releaseSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::Element::OnEnable(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnEnable(boost::signal<void ()>::slot_type slot)
 {
-    m_enableSignal.connect(slot);
+    m_connections.push_back(m_enableSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::Element::OnDisable(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnDisable(boost::signal<void ()>::slot_type slot)
 {
-    m_disableSignal.connect(slot);
+    m_connections.push_back(m_disableSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::Element::OnActivate(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnActivate(boost::signal<void ()>::slot_type slot)
 {
-    m_activateSignal.connect(slot);
+    m_connections.push_back(m_activateSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::Element::OnDesactivate(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::Element::OnDesactivate(boost::signal<void ()>::slot_type slot)
 {
-    m_desactivateSignal.connect(slot);
+    m_connections.push_back(m_desactivateSignal.connect(slot));
+    return m_connections.back();
+}
+
+void sf::ui::Element::DisconnectSlot(boost::signals::connection& connection)
+{
+    connection.disconnect();
+    for(std::vector<boost::signals::connection>::iterator it = m_connections.begin(); it != m_connections.end();)
+    {
+        if(*it == connection)
+            it = m_connections.erase(it);
+    }
+}
+
+void sf::ui::Element::DisconnectSlots()
+{
+    for(std::vector<boost::signals::connection>::iterator it = m_connections.begin(); it != m_connections.end(); ++it)
+        it->disconnect();
+    m_connections.clear();
 }

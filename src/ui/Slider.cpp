@@ -198,7 +198,8 @@ void sf::ui::Slider::ApplySkin()
     SetPosition(position);
 }
 
-void sf::ui::Slider::OnValueChange(boost::signal<void (float)>::slot_type slot)
+boost::signals::connection& sf::ui::Slider::OnValueChange(boost::signal<void (float)>::slot_type slot)
 {
-    m_valueChangeSignal.connect(slot);
+    m_connections.push_back(m_valueChangeSignal.connect(slot));
+    return m_connections.back();
 }

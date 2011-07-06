@@ -69,7 +69,7 @@ namespace sf
 
             void Draw(sf::RenderWindow& window);
 
-            void OnValueChange(boost::signal<void (bool)>::slot_type slot);
+            boost::signals::connection& OnValueChange(boost::signal<void (bool)>::slot_type slot);
 
         private :
             void ApplySkin();

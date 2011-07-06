@@ -288,18 +288,20 @@ void sf::ui::TextInput::ApplySkin()
     SetPosition(position);
 }
 
-void sf::ui::TextInput::OnSwitch(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::TextInput::OnSwitch(boost::signal<void ()>::slot_type slot)
 {
-    m_switchSignal.connect(slot);
+    m_connections.push_back(m_switchSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::TextInput::OnSubmit(boost::signal<void ()>::slot_type slot)
+boost::signals::connection& sf::ui::TextInput::OnSubmit(boost::signal<void ()>::slot_type slot)
 {
-    m_submitSignal.connect(slot);
+    m_connections.push_back(m_submitSignal.connect(slot));
+    return m_connections.back();
 }
 
-void sf::ui::TextInput::OnValueChange(boost::signal<void (const std::wstring&)>::slot_type slot)
+boost::signals::connection& sf::ui::TextInput::OnValueChange(boost::signal<void (const std::wstring&)>::slot_type slot)
 {
-    m_valueChangeSignal.connect(slot);
+    m_connections.push_back(m_valueChangeSignal.connect(slot));
+    return m_connections.back();
 }
-

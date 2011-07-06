@@ -218,7 +218,8 @@ void sf::ui::Switch::ApplySkin()
     SetPosition(position);
 }
 
-void sf::ui::Switch::OnValueChange(boost::signal<void (bool)>::slot_type slot)
+boost::signals::connection& sf::ui::Switch::OnValueChange(boost::signal<void (bool)>::slot_type slot)
 {
-    m_valueChangeSignal.connect(slot);
+    m_connections.push_back(m_valueChangeSignal.connect(slot));
+    return m_connections.back();
 }
