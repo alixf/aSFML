@@ -10,7 +10,7 @@ sf::FPSCounter::FPSCounter() :
 
 void sf::FPSCounter::Draw(sf::RenderWindow& window)
 {
-    if(m_clock.GetElapsedTime() >= 1.f)
+    if(m_clock.GetElapsedTime() >= 1000)
     {
         std::stringstream ss;
         ss << "FPS : " << m_count;
