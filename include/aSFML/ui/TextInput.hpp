@@ -74,7 +74,7 @@ namespace sf
 
             sf::FloatRect   m_backgroundRect;
             sf::Clock       m_cursorClock;
-            float           m_cursorBlinkTime;
+            unsigned int    m_cursorBlinkTime;
             bool            m_drawCursor;
             unsigned int    m_cursorPosition;
             sf::Shape       m_background;

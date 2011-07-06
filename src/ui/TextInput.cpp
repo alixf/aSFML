@@ -30,7 +30,7 @@ sf::ui::TextInput::StateSkin::StateSkin() :
 
 sf::ui::TextInput::TextInput(const std::wstring& placeholder, const sf::Vector2f& position, const sf::Vector2f& size) :
     m_backgroundRect(sf::Vector2f(0.f,0.f), size),
-    m_cursorBlinkTime(0.5f),
+    m_cursorBlinkTime(500),
     m_drawCursor(false),
     m_cursorPosition(0),
     m_text(""),
