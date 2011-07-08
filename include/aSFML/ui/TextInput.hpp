@@ -60,7 +60,7 @@ namespace sf
             void SetText(const std::wstring& string);
             void SetSkin(const Skin& skin);
 
-            void OnEvent(const sf::Event& event);
+            bool OnEvent(const sf::Event& event);
 
             void Draw(sf::RenderWindow& window);
 

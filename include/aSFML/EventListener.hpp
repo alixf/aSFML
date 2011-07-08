@@ -12,7 +12,7 @@ namespace sf
 
         virtual ~EventListener();
 
-        virtual void OnEvent(const sf::Event& event) = 0;
+        virtual bool OnEvent(const sf::Event& event) = 0;
     };
 }
 

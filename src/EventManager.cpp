@@ -18,8 +18,13 @@ void sf::EventManager::RemoveListener(EventListener* listener)
 
 void sf::EventManager::PostEvent(const sf::Event& event)
 {
-    for(std::list<EventListener*>::iterator it = m_listeners.begin(); it != m_listeners.end(); ++it)
-        (*it)->OnEvent(event);
+    bool absorbed = false;
+    std::list<EventListener*>::reverse_iterator it = m_listeners.rbegin();
+    while(!absorbed && it != m_listeners.rend())
+    {
+        absorbed = (*it)->OnEvent(event);
+        ++it;
+    }
 }
 
 sf::EventManager::EventManager()

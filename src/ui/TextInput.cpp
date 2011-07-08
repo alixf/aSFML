@@ -86,7 +86,7 @@ void sf::ui::TextInput::SetSkin(const Skin& skin)
     ApplySkin();
 }
 
-void sf::ui::TextInput::OnEvent(const sf::Event& event)
+bool sf::ui::TextInput::OnEvent(const sf::Event& event)
 {
     if(m_state != DISABLED)
     {
@@ -101,12 +101,14 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
                     {
                         m_state = HOVER;
                         m_hoverSignal();
+                        return true;
                     }
                 }
                 else if(m_state != NORMAL)
                 {
                     m_state = NORMAL;
                     m_leaveSignal();
+                    return true;
                 }
             }
             break;
@@ -117,6 +119,7 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
                 m_state = PRESSED;
                 m_pressSignal();
                 m_state = ACTIVE;
+                return true;
             }
             if(m_state == ACTIVE)
             {
@@ -124,6 +127,7 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
                 {
                     m_state = NORMAL;
                     m_desactivateSignal();
+                    return true;
                 }
                 else
                 {
@@ -141,6 +145,7 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
                 m_releaseSignal();
                 m_drawCursor = true;
                 m_cursorClock.Reset();
+                return true;
             }
             break;
 
@@ -188,6 +193,7 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
                     m_valueChangeSignal(GetText());
                     break;
                 }
+                return true;
             }
             break;
 
@@ -199,11 +205,13 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
                 case sf::Key::Left :
                     if(m_cursorPosition > 0)
                         MoveCursor(-1);
+                    return true;
                     break;
 
                 case sf::Key::Right :
                     if(m_cursorPosition < m_text.GetString().GetSize())
                         MoveCursor(+1);
+                    return true;
                     break;
 
                 default :
@@ -216,6 +224,8 @@ void sf::ui::TextInput::OnEvent(const sf::Event& event)
             break;
         }
     }
+
+    return false;
 }
 
 void sf::ui::TextInput::Draw(sf::RenderWindow& window)

@@ -104,7 +104,7 @@ void sf::ui::Slider::SetSkin(const sf::ui::Slider::Skin& skin)
     ApplySkin();
 }
 
-void sf::ui::Slider::OnEvent(const sf::Event& event)
+bool sf::ui::Slider::OnEvent(const sf::Event& event)
 {
     if(m_state != DISABLED)
     {
@@ -116,6 +116,7 @@ void sf::ui::Slider::OnEvent(const sf::Event& event)
             if(m_dragAndDrop)
             {
                 SetValue((event.MouseMove.X-m_boundingRect.Left)/m_boundingRect.Width);
+                return true;
             }
             if(m_boundingRect.Contains(event.MouseMove.X, event.MouseMove.Y))
             {
@@ -123,12 +124,14 @@ void sf::ui::Slider::OnEvent(const sf::Event& event)
                 {
                     m_state = HOVER;
                     m_hoverSignal();
+                    return true;
                 }
             }
             else if(m_state != NORMAL)
             {
                 m_state = NORMAL;
                 m_leaveSignal();
+                return true;
             }
             break;
 
@@ -146,6 +149,7 @@ void sf::ui::Slider::OnEvent(const sf::Event& event)
                     m_cursorMouseOffset = m_cursorRect.Width/2;
                     SetValue((event.MouseButton.X-m_boundingRect.Left)/m_boundingRect.Width);
                 }
+                return true;
             }
             break;
 
@@ -155,11 +159,13 @@ void sf::ui::Slider::OnEvent(const sf::Event& event)
                 m_state = CLICKED;
                 m_clickSignal();
                 m_state = HOVER;
+                return true;
             }
             else if(m_dragAndDrop)
             {
                 m_state = NORMAL;
                 m_releaseSignal();
+                return true;
             }
             m_dragAndDrop = false;
             break;
@@ -171,6 +177,8 @@ void sf::ui::Slider::OnEvent(const sf::Event& event)
         if(previousState != m_state)
             ApplySkin();
     }
+
+    return false;
 }
 
 void sf::ui::Slider::Draw(sf::RenderWindow& window)

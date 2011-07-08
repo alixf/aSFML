@@ -77,7 +77,7 @@ void sf::ui::Button::SetSkin(sf::ui::Button::Skin& skin)
     ApplySkin();
 }
 
-void sf::ui::Button::OnEvent(const sf::Event& event)
+bool sf::ui::Button::OnEvent(const sf::Event& event)
 {
     if(m_state != DISABLED)
     {
@@ -92,12 +92,14 @@ void sf::ui::Button::OnEvent(const sf::Event& event)
                 {
                     m_state = HOVER;
                     Element::m_hoverSignal();
+                    return true;
                 }
             }
             else if(m_state != NORMAL)
             {
                 m_state = NORMAL;
                 m_leaveSignal();
+                return true;
             }
             break;
 
@@ -106,6 +108,7 @@ void sf::ui::Button::OnEvent(const sf::Event& event)
             {
                 m_state = PRESSED;
                 m_pressSignal();
+                return true;
             }
             break;
 
@@ -116,6 +119,7 @@ void sf::ui::Button::OnEvent(const sf::Event& event)
                 m_clickSignal();
                 m_state = HOVER;
                 m_releaseSignal();
+                return true;
             }
             break;
 
@@ -126,6 +130,8 @@ void sf::ui::Button::OnEvent(const sf::Event& event)
         if(m_state != previousState)
             ApplySkin();
     }
+
+    return false;
 }
 
 void sf::ui::Button::Draw(sf::RenderWindow& window)

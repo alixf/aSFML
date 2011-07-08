@@ -24,7 +24,7 @@ namespace sf
 
             void SplitImage(SplitOrientation orientation, const std::vector<unsigned int>& states);
 
-            void OnEvent(const sf::Event& event);
+            bool OnEvent(const sf::Event& event);
 
             void Draw(sf::RenderWindow& window);
 

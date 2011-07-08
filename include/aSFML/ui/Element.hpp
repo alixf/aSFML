@@ -24,7 +24,7 @@ namespace sf
 
             virtual ~Element();
 
-            virtual void OnEvent(const sf::Event& event) = 0;
+            virtual bool OnEvent(const sf::Event& event) = 0;
             virtual void Draw(sf::RenderWindow& window) = 0;
 
             boost::signals::connection& OnHover(boost::signal<void ()>::slot_type slot);

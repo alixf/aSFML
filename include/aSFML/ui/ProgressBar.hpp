@@ -57,7 +57,7 @@ namespace sf
             void SetProgress(float progress);
             void SetSkin(const Skin& skin);
 
-            void OnEvent(const sf::Event& event);
+            bool OnEvent(const sf::Event& event);
 
             void Draw(sf::RenderWindow& window);
 

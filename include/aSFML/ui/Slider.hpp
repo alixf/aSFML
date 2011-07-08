@@ -52,7 +52,7 @@ namespace sf
             void SetValue(float value);
             void SetSkin(const Skin& skin);
 
-            void OnEvent(const sf::Event& event);
+            bool OnEvent(const sf::Event& event);
 
             void Draw(sf::RenderWindow& window);
 
