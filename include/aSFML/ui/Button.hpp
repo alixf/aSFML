@@ -46,6 +46,7 @@ namespace sf
             void SetSize(const sf::Vector2f& size);
             void SetString(const std::wstring& string);
             void SetSkin(Skin& skin);
+            void SetState(State);
 
             bool OnEvent(const sf::Event& event);
 

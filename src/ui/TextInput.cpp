@@ -86,6 +86,15 @@ void sf::ui::TextInput::SetSkin(const Skin& skin)
     ApplySkin();
 }
 
+void sf::ui::TextInput::SetState(sf::ui::TextInput::State state)
+{
+    if(m_state != state)
+    {
+        m_state = state;
+        ApplySkin();
+    }
+}
+
 bool sf::ui::TextInput::OnEvent(const sf::Event& event)
 {
     if(m_state != DISABLED)
@@ -99,14 +108,14 @@ bool sf::ui::TextInput::OnEvent(const sf::Event& event)
                 {
                     if(m_state == NORMAL)
                     {
-                        m_state = HOVER;
+                        SetState(HOVER);
                         m_hoverSignal();
                         return true;
                     }
                 }
                 else if(m_state != NORMAL)
                 {
-                    m_state = NORMAL;
+                    SetState(NORMAL);
                     m_leaveSignal();
                     return true;
                 }
@@ -118,14 +127,14 @@ bool sf::ui::TextInput::OnEvent(const sf::Event& event)
             {
                 m_state = PRESSED;
                 m_pressSignal();
-                m_state = ACTIVE;
+                SetState(ACTIVE);
                 return true;
             }
             if(m_state == ACTIVE)
             {
                 if(!GetRect().Contains(event.MouseButton.X, event.MouseButton.Y))
                 {
-                    m_state = NORMAL;
+                    SetState(NORMAL);
                     m_desactivateSignal();
                     return true;
                 }
@@ -141,7 +150,7 @@ bool sf::ui::TextInput::OnEvent(const sf::Event& event)
             {
                 m_state = CLICKED;
                 m_clickSignal();
-                m_state = ACTIVE;
+                SetState(ACTIVE);
                 m_releaseSignal();
                 m_drawCursor = true;
                 m_cursorClock.Reset();
@@ -176,12 +185,12 @@ bool sf::ui::TextInput::OnEvent(const sf::Event& event)
                     break;
 
                 case 13 : // Return
-                    m_state = NORMAL;
+                    SetState(NORMAL);
                     m_submitSignal();
                     break;
 
                 case 9 : // Tab
-                    m_state = NORMAL;
+                    SetState(NORMAL);
                     m_switchSignal();
                     break;
 

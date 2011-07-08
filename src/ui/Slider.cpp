@@ -104,12 +104,19 @@ void sf::ui::Slider::SetSkin(const sf::ui::Slider::Skin& skin)
     ApplySkin();
 }
 
+void sf::ui::Slider::SetState(sf::ui::Slider::State state)
+{
+    if(m_state != state)
+    {
+        m_state = state;
+        ApplySkin();
+    }
+}
+
 bool sf::ui::Slider::OnEvent(const sf::Event& event)
 {
     if(m_state != DISABLED)
     {
-        State previousState = m_state;
-
         switch(event.Type)
         {
         case sf::Event::MouseMoved :
@@ -122,14 +129,14 @@ bool sf::ui::Slider::OnEvent(const sf::Event& event)
             {
                 if(m_state != HOVER)
                 {
-                    m_state = HOVER;
+                    SetState(HOVER);
                     m_hoverSignal();
                     return true;
                 }
             }
             else if(m_state != NORMAL)
             {
-                m_state = NORMAL;
+                SetState(NORMAL);
                 m_leaveSignal();
                 return true;
             }
@@ -139,7 +146,7 @@ bool sf::ui::Slider::OnEvent(const sf::Event& event)
             if(m_state == HOVER)
             {
                 m_pressSignal();
-                m_state = PRESSED;
+                SetState(PRESSED);
 
                 m_dragAndDrop = true;
                 if(m_cursorRect.Contains(event.MouseButton.X, event.MouseButton.Y)) // Mouse button pressed on cursor
@@ -158,12 +165,12 @@ bool sf::ui::Slider::OnEvent(const sf::Event& event)
             {
                 m_state = CLICKED;
                 m_clickSignal();
-                m_state = HOVER;
+                SetState(HOVER);
                 return true;
             }
             else if(m_dragAndDrop)
             {
-                m_state = NORMAL;
+                SetState(NORMAL);
                 m_releaseSignal();
                 return true;
             }
@@ -173,9 +180,6 @@ bool sf::ui::Slider::OnEvent(const sf::Event& event)
         default :
             break;
         }
-
-        if(previousState != m_state)
-            ApplySkin();
     }
 
     return false;

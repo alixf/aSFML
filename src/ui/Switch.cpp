@@ -105,12 +105,19 @@ void sf::ui::Switch::SetSkin(const Skin& skin)
     ApplySkin();
 }
 
+void sf::ui::Switch::SetState(sf::ui::Switch::State state)
+{
+    if(m_state != state)
+    {
+        m_state = state;
+        ApplySkin();
+    }
+}
+
 bool sf::ui::Switch::OnEvent(const sf::Event& event)
 {
     if(m_state != DISABLED)
     {
-        State previousState = m_state;
-
         switch(event.Type)
         {
         case sf::Event::MouseMoved :
@@ -118,14 +125,14 @@ bool sf::ui::Switch::OnEvent(const sf::Event& event)
             {
                 if(m_state == NORMAL)
                 {
-                    m_state = HOVER;
+                    SetState(HOVER);
                     m_hoverSignal();
                     return true;
                 }
             }
             else if(m_state != NORMAL)
             {
-                m_state = NORMAL;
+                SetState(NORMAL);
                 m_leaveSignal();
                 return true;
             }
@@ -134,7 +141,7 @@ bool sf::ui::Switch::OnEvent(const sf::Event& event)
         case sf::Event::MouseButtonPressed :
             if(m_state == HOVER)
             {
-                m_state = PRESSED;
+                SetState(PRESSED);
                 m_pressSignal();
                 return true;
             }
@@ -146,7 +153,7 @@ bool sf::ui::Switch::OnEvent(const sf::Event& event)
                 SetValue(!GetValue());
                 m_state = CLICKED;
                 m_clickSignal();
-                m_state = HOVER;
+                SetState(HOVER);
                 m_releaseSignal();
                 return true;
             }
@@ -155,9 +162,6 @@ bool sf::ui::Switch::OnEvent(const sf::Event& event)
         default :
             break;
         }
-
-        if(m_state != previousState)
-            ApplySkin();
     }
 
     return false;

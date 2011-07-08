@@ -21,8 +21,10 @@ namespace sf
                        };
 
             Element();
-
             virtual ~Element();
+
+            virtual State GetState() const;
+            virtual void SetState(State state);
 
             virtual bool OnEvent(const sf::Event& event) = 0;
             virtual void Draw(sf::RenderWindow& window) = 0;

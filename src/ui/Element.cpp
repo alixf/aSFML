@@ -9,6 +9,16 @@ sf::ui::Element::~Element()
 {
 }
 
+sf::ui::Element::State sf::ui::Element::GetState() const
+{
+    return m_state;
+}
+
+void sf::ui::Element::SetState(sf::ui::Element::State state)
+{
+    m_state = state;
+}
+
 boost::signals::connection& sf::ui::Element::OnHover(boost::signal<void ()>::slot_type slot)
 {
     m_connections.push_back(m_hoverSignal.connect(slot));

@@ -82,12 +82,6 @@ void sf::ui::ProgressBar::SetSize(const sf::Vector2f& size)
     ApplySkin();
 }
 
-void sf::ui::ProgressBar::SetSkin(const sf::ui::ProgressBar::Skin& skin)
-{
-    m_skin = skin;
-    ApplySkin();
-}
-
 void sf::ui::ProgressBar::SetProgress(float progress)
 {
     m_progress = progress;
@@ -103,12 +97,25 @@ void sf::ui::ProgressBar::SetProgress(float progress)
     m_valueChangeSignal(m_progress);
 }
 
+void sf::ui::ProgressBar::SetSkin(const sf::ui::ProgressBar::Skin& skin)
+{
+    m_skin = skin;
+    ApplySkin();
+}
+
+void sf::ui::ProgressBar::SetState(sf::ui::ProgressBar::State state)
+{
+    if(m_state != state)
+    {
+        m_state = state;
+        ApplySkin();
+    }
+}
+
 bool sf::ui::ProgressBar::OnEvent(const sf::Event& event)
 {
     if(m_state != DISABLED)
     {
-        State previousState = m_state;
-
         switch(event.Type)
         {
         case sf::Event::MouseMoved :
@@ -116,14 +123,14 @@ bool sf::ui::ProgressBar::OnEvent(const sf::Event& event)
             {
                 if(m_state == NORMAL)
                 {
-                    m_state = HOVER;
+                    SetState(HOVER);
                     m_hoverSignal();
                     return true;
                 }
             }
             else if(m_state != NORMAL)
             {
-                m_state = NORMAL;
+                SetState(NORMAL);
                 m_leaveSignal();
                 return true;
             }
@@ -132,7 +139,7 @@ bool sf::ui::ProgressBar::OnEvent(const sf::Event& event)
         case sf::Event::MouseButtonPressed :
             if(m_state == HOVER)
             {
-                m_state = PRESSED;
+                SetState(PRESSED);
                 m_pressSignal();
                 return true;
             }
@@ -143,7 +150,7 @@ bool sf::ui::ProgressBar::OnEvent(const sf::Event& event)
             {
                 m_state = CLICKED;
                 m_clickSignal();
-                m_state = HOVER;
+                SetState(HOVER);
                 m_releaseSignal();
                 return true;
             }
@@ -152,9 +159,6 @@ bool sf::ui::ProgressBar::OnEvent(const sf::Event& event)
         default :
             break;
         }
-
-        if(m_state != previousState)
-            ApplySkin();
     }
 
     return false;
