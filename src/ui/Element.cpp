@@ -14,9 +14,57 @@ sf::ui::Element::State sf::ui::Element::GetState() const
     return m_state;
 }
 
+sf::Vector2f sf::ui::Element::GetPosition() const
+{
+    return sf::Vector2f();
+}
+
+float sf::ui::Element::GetRotation() const
+{
+    return 0.f;
+}
+
+sf::Vector2f sf::ui::Element::GetScale() const
+{
+    return sf::Vector2f();
+}
+
+sf::Color sf::ui::Element::GetColor() const
+{
+    return sf::Color::White;
+}
+
 void sf::ui::Element::SetState(sf::ui::Element::State state)
 {
     m_state = state;
+}
+
+void sf::ui::Element::SetPosition(const sf::Vector2f& position)
+{
+}
+
+void sf::ui::Element::Move(const sf::Vector2f& move)
+{
+}
+
+void sf::ui::Element::SetRotation(float rotation)
+{
+}
+
+void sf::ui::Element::Rotate(float rotation)
+{
+}
+
+void sf::ui::Element::SetScale(const sf::Vector2f& scale)
+{
+}
+
+void sf::ui::Element::Scale(const sf::Vector2f& scale)
+{
+}
+
+void sf::ui::Element::SetColor(const sf::Color& color)
+{
 }
 
 boost::signals::connection& sf::ui::Element::OnHover(boost::signal<void ()>::slot_type slot)

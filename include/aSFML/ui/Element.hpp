@@ -24,7 +24,19 @@ namespace sf
             virtual ~Element();
 
             virtual State GetState() const;
+            virtual sf::Vector2f GetPosition() const;
+            virtual float GetRotation() const;
+            virtual sf::Vector2f GetScale() const;
+            virtual sf::Color GetColor() const;
+
             virtual void SetState(State state);
+            virtual void SetPosition(const sf::Vector2f& position);
+            virtual void Move(const sf::Vector2f& move);
+            virtual void SetRotation(float rotation);
+            virtual void Rotate(float rotation);
+            virtual void SetScale(const sf::Vector2f& scale);
+            virtual void Scale(const sf::Vector2f& scale);
+            virtual void SetColor(const sf::Color& color);
 
             virtual bool OnEvent(const sf::Event& event) = 0;
             virtual void Draw(sf::RenderWindow& window) = 0;
