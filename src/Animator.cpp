@@ -1,27 +1,7 @@
 #include <aSFML/Animator.hpp>
 #include <iostream>
 
-FloatAnimation::FloatAnimation(sf::Drawable& p_drawable, float p_beginValue, float p_endValue, unsigned int p_beginTime, unsigned int p_duration, bool p_loop) :
-    drawable(&p_drawable),
-    beginValue(p_beginValue),
-    endValue(p_endValue),
-    beginTime(p_beginTime),
-    duration(p_duration),
-    loop(p_loop),
-    finished(false)
-{
-}
-ColorAnimation::ColorAnimation(sf::Drawable& p_drawable, sf::Color p_beginValue, sf::Color p_endValue, unsigned int p_beginTime, unsigned int p_duration, bool p_loop) :
-    drawable(&p_drawable),
-    beginValue(p_beginValue),
-    endValue(p_endValue),
-    beginTime(p_beginTime),
-    duration(p_duration),
-    loop(p_loop),
-    finished(false)
-{
-}
-VectorAnimation::VectorAnimation(sf::Drawable& p_drawable, sf::Vector2f p_beginValue, sf::Vector2f p_endValue, unsigned int p_beginTime, unsigned int p_duration, bool p_loop) :
+sf::FloatAnimation::FloatAnimation(sf::Drawable& p_drawable, float p_beginValue, float p_endValue, unsigned int p_beginTime, unsigned int p_duration, bool p_loop) :
     drawable(&p_drawable),
     beginValue(p_beginValue),
     endValue(p_endValue),
@@ -32,11 +12,33 @@ VectorAnimation::VectorAnimation(sf::Drawable& p_drawable, sf::Vector2f p_beginV
 {
 }
 
-Animator::Animator()
+sf::ColorAnimation::ColorAnimation(sf::Drawable& p_drawable, sf::Color p_beginValue, sf::Color p_endValue, unsigned int p_beginTime, unsigned int p_duration, bool p_loop) :
+    drawable(&p_drawable),
+    beginValue(p_beginValue),
+    endValue(p_endValue),
+    beginTime(p_beginTime),
+    duration(p_duration),
+    loop(p_loop),
+    finished(false)
 {
 }
 
-Animator::~Animator()
+sf::VectorAnimation::VectorAnimation(sf::Drawable& p_drawable, sf::Vector2f p_beginValue, sf::Vector2f p_endValue, unsigned int p_beginTime, unsigned int p_duration, bool p_loop) :
+    drawable(&p_drawable),
+    beginValue(p_beginValue),
+    endValue(p_endValue),
+    beginTime(p_beginTime),
+    duration(p_duration),
+    loop(p_loop),
+    finished(false)
+{
+}
+
+sf::Animator::Animator()
+{
+}
+
+sf::Animator::~Animator()
 {
     for(std::vector<VectorAnimation*>::iterator it = m_moveAnimations.begin(); it != m_moveAnimations.end(); ++it)
         delete *it;
@@ -48,13 +50,13 @@ Animator::~Animator()
         delete *it;
 }
 
-Animator& Animator::GetInstance()
+sf::Animator& sf::Animator::GetInstance()
 {
     static Animator instance;
     return instance;
 }
 
-FloatAnimation* Animator::AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, float beginValue, float endValue, bool loop)
+sf::FloatAnimation* sf::Animator::AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, float beginValue, float endValue, bool loop)
 {
     switch(type)
     {
@@ -64,14 +66,14 @@ FloatAnimation* Animator::AddAnimation(sf::Drawable& drawable, Animator::Type ty
         break;
 
     default :
-        std::cerr << "Animator::AddAnimation : Animation Type is not compatible with parameters." << std::endl;
+        std::cerr << "sf::Animator::AddAnimation : Animation Type is not compatible with parameters." << std::endl;
         break;
     }
 
     return 0;
 }
 
-ColorAnimation* Animator::AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, sf::Color beginValue, sf::Color endValue, bool loop)
+sf::ColorAnimation* sf::Animator::AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, sf::Color beginValue, sf::Color endValue, bool loop)
 {
     switch(type)
     {
@@ -81,14 +83,14 @@ ColorAnimation* Animator::AddAnimation(sf::Drawable& drawable, Animator::Type ty
         break;
 
     default :
-        std::cerr << "Animator::AddAnimation : Animation Type is not compatible with parameters." << std::endl;
+        std::cerr << "sf::Animator::AddAnimation : Animation Type is not compatible with parameters." << std::endl;
         break;
     }
 
     return 0;
 }
 
-VectorAnimation* Animator::AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, sf::Vector2f beginValue, sf::Vector2f endValue, bool loop)
+sf::VectorAnimation* sf::Animator::AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, sf::Vector2f beginValue, sf::Vector2f endValue, bool loop)
 {
     switch(type)
     {
@@ -103,14 +105,14 @@ VectorAnimation* Animator::AddAnimation(sf::Drawable& drawable, Animator::Type t
         break;
 
     default :
-        std::cerr << "Animator::AddAnimation : Animation Type is not compatible with parameters." << std::endl;
+        std::cerr << "sf::Animator::AddAnimation : Animation Type is not compatible with parameters." << std::endl;
         break;
     }
 
     return 0;
 }
 
-void Animator::RemoveAnimation(FloatAnimation* animation)
+void sf::Animator::RemoveAnimation(sf::FloatAnimation* animation)
 {
     for(std::vector<FloatAnimation*>::iterator it = m_rotateAnimations.begin(); it != m_rotateAnimations.end(); ++it)
     {
@@ -123,7 +125,7 @@ void Animator::RemoveAnimation(FloatAnimation* animation)
     }
 }
 
-void Animator::RemoveAnimation(ColorAnimation* animation)
+void sf::Animator::RemoveAnimation(sf::ColorAnimation* animation)
 {
     for(std::vector<ColorAnimation*>::iterator it = m_colorAnimations.begin(); it != m_colorAnimations.end(); ++it)
     {
@@ -136,7 +138,7 @@ void Animator::RemoveAnimation(ColorAnimation* animation)
     }
 }
 
-void Animator::RemoveAnimation(VectorAnimation* animation)
+void sf::Animator::RemoveAnimation(sf::VectorAnimation* animation)
 {
     for(std::vector<VectorAnimation*>::iterator it = m_moveAnimations.begin(); it != m_moveAnimations.end(); ++it)
     {
@@ -158,7 +160,7 @@ void Animator::RemoveAnimation(VectorAnimation* animation)
     }
 }
 
-void Animator::Apply()
+void sf::Animator::Apply()
 {
     for(std::vector<VectorAnimation*>::iterator it = m_moveAnimations.begin(); it != m_moveAnimations.end(); ++it)
     {
@@ -244,9 +246,9 @@ void Animator::Apply()
         {
             float factor = ((*it)->clock.GetElapsedTime()-(*it)->beginTime)/static_cast<float>((*it)->duration);
             (*it)->drawable->SetColor(sf::Color(factor*((*it)->endValue.r)+(1-factor)*((*it)->beginValue.r),
-                                             factor*((*it)->endValue.g)+(1-factor)*((*it)->beginValue.g),
-                                             factor*((*it)->endValue.b)+(1-factor)*((*it)->beginValue.b),
-                                             factor*((*it)->endValue.a)+(1-factor)*((*it)->beginValue.a)));
+                                                factor*((*it)->endValue.g)+(1-factor)*((*it)->beginValue.g),
+                                                factor*((*it)->endValue.b)+(1-factor)*((*it)->beginValue.b),
+                                                factor*((*it)->endValue.a)+(1-factor)*((*it)->beginValue.a)));
         }
     }
 }
