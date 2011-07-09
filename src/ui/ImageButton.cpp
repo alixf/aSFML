@@ -34,6 +34,12 @@ void sf::ui::ImageButton::SetPosition(const sf::Vector2f& position)
         it->second.SetPosition(position);
 }
 
+void sf::ui::ImageButton::SetImage(const sf::Image& image, bool resetSpritesSubRects)
+{
+    for(std::map<State, sf::Sprite>::iterator it = m_sprites.begin(); it != m_sprites.end(); ++it)
+        it->second.SetImage(image, resetSpritesSubRects);
+}
+
 void sf::ui::ImageButton::SplitImage(sf::ui::ImageButton::SplitOrientation orientation, const std::vector<unsigned int>& states)
 {
     for(unsigned int i = 0; i < states.size(); ++i)
