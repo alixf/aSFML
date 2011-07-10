@@ -112,7 +112,7 @@ sf::ui::VectorAnimation* sf::ui::Animator::AddAnimation(sf::ui::Element& element
     return 0;
 }
 
-void sf::ui::Animator::RemoveAnimation(sf::ui::FloatAnimation* animation)
+void sf::ui::Animator::Remove(sf::ui::FloatAnimation* animation)
 {
     for(std::vector<FloatAnimation*>::iterator it = m_rotateAnimations.begin(); it != m_rotateAnimations.end(); ++it)
     {
@@ -125,7 +125,7 @@ void sf::ui::Animator::RemoveAnimation(sf::ui::FloatAnimation* animation)
     }
 }
 
-void sf::ui::Animator::RemoveAnimation(sf::ui::ColorAnimation* animation)
+void sf::ui::Animator::Remove(sf::ui::ColorAnimation* animation)
 {
     for(std::vector<ColorAnimation*>::iterator it = m_colorAnimations.begin(); it != m_colorAnimations.end(); ++it)
     {
@@ -138,7 +138,7 @@ void sf::ui::Animator::RemoveAnimation(sf::ui::ColorAnimation* animation)
     }
 }
 
-void sf::ui::Animator::RemoveAnimation(sf::ui::VectorAnimation* animation)
+void sf::ui::Animator::Remove(sf::ui::VectorAnimation* animation)
 {
     for(std::vector<VectorAnimation*>::iterator it = m_moveAnimations.begin(); it != m_moveAnimations.end(); ++it)
     {
@@ -158,6 +158,14 @@ void sf::ui::Animator::RemoveAnimation(sf::ui::VectorAnimation* animation)
             return;
         }
     }
+}
+
+void sf::ui::Animator::Clear()
+{
+    m_moveAnimations.clear();
+    m_rotateAnimations.clear();
+    m_scaleAnimations.clear();
+    m_colorAnimations.clear();
 }
 
 void sf::ui::Animator::Apply()

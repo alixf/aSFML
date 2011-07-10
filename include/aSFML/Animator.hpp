@@ -59,9 +59,10 @@ namespace sf
         FloatAnimation* AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, float beginValue, float endValue, bool loop = false);
         ColorAnimation* AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, sf::Color beginValue, sf::Color endValue, bool loop = false);
         VectorAnimation* AddAnimation(sf::Drawable& drawable, Animator::Type type, unsigned int beginTime, unsigned int duration, sf::Vector2f beginValue, sf::Vector2f endValue, bool loop = false);
-        void RemoveAnimation(FloatAnimation* animation);
-        void RemoveAnimation(ColorAnimation* animation);
-        void RemoveAnimation(VectorAnimation* animation);
+        void Remove(FloatAnimation* animation);
+        void Remove(ColorAnimation* animation);
+        void Remove(VectorAnimation* animation);
+        void Clear();
 
         void Apply();
 
