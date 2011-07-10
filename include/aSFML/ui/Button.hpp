@@ -24,7 +24,7 @@ namespace sf
                 sf::Color               backgroundBorderGradientColor;
                 sf::Orientation::Type   backgroundBorderGradientOrientation;
                 // Text
-                float                   textSize;
+                float                   textCharacterSize;
                 sf::Font&               textFont;
                 sf::Color               textColor;
                 sf::Color               textShadowColor;
@@ -36,30 +36,39 @@ namespace sf
             Button(const std::wstring& text = std::wstring(), const sf::Vector2f& position = sf::Vector2f(0.f, 0.f), const sf::Vector2f& size = sf::Vector2f(-1.f, -1.f));
             ~Button();
 
-            sf::Vector2f GetPosition() const;
+            Skin GetSkin() const;
             sf::Vector2f GetSize() const;
             sf::FloatRect GetRect() const;
             std::wstring GetString() const;
-            Skin GetSkin() const;
+            sf::Vector2f GetPosition() const;
+            float GetRotation() const;
+            sf::Vector2f GetScale() const;
+            sf::Color GetColor() const;
 
-            void SetPosition(const sf::Vector2f& position);
+            void SetState(State state);
+            void SetSkin(Skin& skin);
             void SetSize(const sf::Vector2f& size);
             void SetString(const std::wstring& string);
-            void SetSkin(Skin& skin);
-            void SetState(State);
+            void SetPosition(const sf::Vector2f& position);
+            void SetRotation(float angle);
+            void SetScale(const sf::Vector2f& factor);
+            void SetColor(const sf::Color& color);
+
+            void Move(const sf::Vector2f& offset);
+            void Rotate(float angle);
+            void Scale(const sf::Vector2f& factor);
 
             bool OnEvent(const sf::Event& event);
-
             void Draw(sf::RenderWindow& window);
 
         private :
             void ApplySkin();
+            void ApplySkin(const sf::Vector2f& buttonSize);
 
-            sf::FloatRect   m_backgroundRect;
-            sf::Vector2f    m_size;
-            sf::Shape       m_background;
-            sf::Text        m_text;
-            Skin            m_skin;
+            std::wstring						m_string;
+            Skin                    		    m_skin;
+            std::map<State, sf::RenderImage*>	m_renderImages;
+            std::map<State, sf::Sprite> 		m_sprites;
         };
     }
 }

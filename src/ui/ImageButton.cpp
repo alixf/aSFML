@@ -2,42 +2,102 @@
 
 sf::ui::ImageButton::ImageButton(const sf::Image& image, const sf::Vector2f& position)
 {
-    // We iterate manually though all state enumeration values once to fill the map
-    m_sprites[NORMAL].SetPosition(position);
-    m_sprites[HOVER].SetPosition(position);
-    m_sprites[PRESSED].SetPosition(position);
-    m_sprites[CLICKED].SetPosition(position);
-    m_sprites[DISABLED].SetPosition(position);
-
-    for(std::map<State, sf::Sprite>::iterator it = m_sprites.begin(); it != m_sprites.end(); ++it)
-        it->second.SetImage(image);
+    SetImage(image);
+    SetPosition(position);
 }
 
 sf::ui::ImageButton::~ImageButton()
 {
 }
 
-sf::Vector2f sf::ui::ImageButton::GetPosition()
+sf::Vector2f sf::ui::ImageButton::GetPosition() const
 {
-    return m_sprites[m_state].GetPosition();
+    return m_sprites.at(m_state).GetPosition();
 }
 
-sf::FloatRect sf::ui::ImageButton::GetRect()
+float sf::ui::ImageButton::GetRotation() const
 {
-    sf::IntRect subRect = m_sprites[m_state].GetSubRect();
+    return m_sprites.at(NORMAL).GetRotation();
+}
+
+sf::Vector2f sf::ui::ImageButton::GetScale() const
+{
+    return m_sprites.at(NORMAL).GetScale();
+}
+
+sf::Color sf::ui::ImageButton::GetColor() const
+{
+    return m_sprites.at(NORMAL).GetColor();
+}
+
+sf::FloatRect sf::ui::ImageButton::GetRect() const
+{
+    sf::IntRect subRect = m_sprites.at(NORMAL).GetSubRect();
     return sf::FloatRect(GetPosition(), sf::Vector2f(subRect.Width, subRect.Height));
 }
 
 void sf::ui::ImageButton::SetPosition(const sf::Vector2f& position)
 {
-    for(std::map<State, sf::Sprite>::iterator it = m_sprites.begin(); it != m_sprites.end(); ++it)
-        it->second.SetPosition(position);
+    m_sprites[DISABLED].SetPosition(position);
+    m_sprites[NORMAL].SetPosition(position);
+    m_sprites[HOVER].SetPosition(position);
+    m_sprites[PRESSED].SetPosition(position);
+}
+
+void sf::ui::ImageButton::SetRotation(float angle)
+{
+    m_sprites[DISABLED].SetRotation(angle);
+    m_sprites[NORMAL].SetRotation(angle);
+    m_sprites[HOVER].SetRotation(angle);
+    m_sprites[PRESSED].SetRotation(angle);
+}
+
+void sf::ui::ImageButton::SetScale(const sf::Vector2f& factor)
+{
+    m_sprites[DISABLED].SetScale(factor);
+    m_sprites[NORMAL].SetScale(factor);
+    m_sprites[HOVER].SetScale(factor);
+    m_sprites[PRESSED].SetScale(factor);
+}
+
+void sf::ui::ImageButton::SetColor(const sf::Color& color)
+{
+    m_sprites[DISABLED].SetColor(color);
+    m_sprites[NORMAL].SetColor(color);
+    m_sprites[HOVER].SetColor(color);
+    m_sprites[PRESSED].SetColor(color);
 }
 
 void sf::ui::ImageButton::SetImage(const sf::Image& image, bool resetSpritesSubRects)
 {
-    for(std::map<State, sf::Sprite>::iterator it = m_sprites.begin(); it != m_sprites.end(); ++it)
-        it->second.SetImage(image, resetSpritesSubRects);
+    m_sprites[DISABLED].SetImage(image, resetSpritesSubRects);
+    m_sprites[NORMAL].SetImage(image, resetSpritesSubRects);
+    m_sprites[HOVER].SetImage(image, resetSpritesSubRects);
+    m_sprites[PRESSED].SetImage(image, resetSpritesSubRects);
+}
+
+void sf::ui::ImageButton::Move(const sf::Vector2f& offset)
+{
+    m_sprites[DISABLED].Move(offset);
+    m_sprites[NORMAL].Move(offset);
+    m_sprites[HOVER].Move(offset);
+    m_sprites[PRESSED].Move(offset);
+}
+
+void sf::ui::ImageButton::Rotate(float angle)
+{
+    m_sprites[DISABLED].Rotate(angle);
+    m_sprites[NORMAL].Rotate(angle);
+    m_sprites[HOVER].Rotate(angle);
+    m_sprites[PRESSED].Rotate(angle);
+}
+
+void sf::ui::ImageButton::Scale(const sf::Vector2f& factor)
+{
+    m_sprites[DISABLED].Scale(factor);
+    m_sprites[NORMAL].Scale(factor);
+    m_sprites[HOVER].Scale(factor);
+    m_sprites[PRESSED].Scale(factor);
 }
 
 void sf::ui::ImageButton::SplitImage(sf::ui::ImageButton::SplitOrientation orientation, const std::vector<unsigned int>& states)

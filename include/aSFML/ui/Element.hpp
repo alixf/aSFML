@@ -31,12 +31,13 @@ namespace sf
 
             virtual void SetState(State state);
             virtual void SetPosition(const sf::Vector2f& position);
-            virtual void Move(const sf::Vector2f& move);
-            virtual void SetRotation(float rotation);
-            virtual void Rotate(float rotation);
-            virtual void SetScale(const sf::Vector2f& scale);
-            virtual void Scale(const sf::Vector2f& scale);
+            virtual void SetRotation(float angle);
+            virtual void SetScale(const sf::Vector2f& factor);
             virtual void SetColor(const sf::Color& color);
+
+            virtual void Move(const sf::Vector2f& offset);
+            virtual void Rotate(float angle);
+            virtual void Scale(const sf::Vector2f& factor);
 
             virtual bool OnEvent(const sf::Event& event) = 0;
             virtual void Draw(sf::RenderWindow& window) = 0;

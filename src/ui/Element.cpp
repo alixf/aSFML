@@ -43,15 +43,7 @@ void sf::ui::Element::SetPosition(const sf::Vector2f& position)
 {
 }
 
-void sf::ui::Element::Move(const sf::Vector2f& move)
-{
-}
-
 void sf::ui::Element::SetRotation(float rotation)
-{
-}
-
-void sf::ui::Element::Rotate(float rotation)
 {
 }
 
@@ -59,11 +51,19 @@ void sf::ui::Element::SetScale(const sf::Vector2f& scale)
 {
 }
 
-void sf::ui::Element::Scale(const sf::Vector2f& scale)
+void sf::ui::Element::SetColor(const sf::Color& color)
 {
 }
 
-void sf::ui::Element::SetColor(const sf::Color& color)
+void sf::ui::Element::Move(const sf::Vector2f& offset)
+{
+}
+
+void sf::ui::Element::Rotate(float angle)
+{
+}
+
+void sf::ui::Element::Scale(const sf::Vector2f& factor)
 {
 }
 
