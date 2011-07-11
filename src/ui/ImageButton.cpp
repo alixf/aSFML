@@ -12,7 +12,7 @@ sf::ui::ImageButton::~ImageButton()
 
 sf::Vector2f sf::ui::ImageButton::GetPosition() const
 {
-    return m_sprites.at(m_state).GetPosition();
+    return m_sprites.at(NORMAL).GetPosition();
 }
 
 float sf::ui::ImageButton::GetRotation() const
