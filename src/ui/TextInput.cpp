@@ -211,13 +211,13 @@ bool sf::ui::TextInput::OnEvent(const sf::Event& event)
             {
                 switch(event.Key.Code)
                 {
-                case sf::Key::Left :
+                case sf::Keyboard::Left :
                     if(m_cursorPosition > 0)
                         MoveCursor(-1);
                     return true;
                     break;
 
-                case sf::Key::Right :
+                case sf::Keyboard::Right :
                     if(m_cursorPosition < m_text.GetString().GetSize())
                         MoveCursor(+1);
                     return true;
